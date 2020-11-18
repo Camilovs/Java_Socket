@@ -10,20 +10,17 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Observable;
 
-/**
- *
- * @author Camilo
- */
-public class Distribuidor extends Observable implements Runnable{
+public class Surtidor extends Observable implements Runnable{
     
     private int puerto;
     private final String HOST = "localhost";
+    private Socket cliente;
     private DataInputStream in;
     private DataOutputStream out;
     private String nombreTag;
     private double valor;
 
-    public Distribuidor(int puerto) {
+    public Surtidor(int puerto) {
         this.puerto = puerto;
     }
     
@@ -31,9 +28,22 @@ public class Distribuidor extends Observable implements Runnable{
     public void run(){
         System.out.println("Iniciando dist..");
         try {
-            Socket cliente = new Socket(HOST, puerto);           
+            cliente = new Socket(HOST, puerto);
+            System.out.println("surtidor conectandose a: "+HOST+":"+puerto);
+            in = new DataInputStream(cliente.getInputStream());
             while(true){
-               
+                System.out.println("Escuchando datos..");
+                nombreTag = in.readUTF();
+                System.out.println("recibiendo nametag");
+                this.setChanged();
+                this.notifyObservers(nombreTag);
+                this.clearChanged();
+                
+                valor = in.readDouble();
+                System.out.println("recibiendo valor");
+                this.setChanged();
+                this.notifyObservers(valor);
+                this.clearChanged();
             }
             
         } catch (IOException ex) {

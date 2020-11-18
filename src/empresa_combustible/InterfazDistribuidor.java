@@ -17,7 +17,7 @@ public class InterfazDistribuidor extends javax.swing.JFrame implements Observer
     private String nombreProductoActual;
     public InterfazDistribuidor() {
         initComponents();
-        Distribuidor distribuidor = new Distribuidor(5000);
+        Surtidor distribuidor = new Surtidor(5001);
         distribuidor.addObserver(this);
         Thread t = new Thread(distribuidor);
         t.start();       
@@ -262,7 +262,20 @@ public class InterfazDistribuidor extends javax.swing.JFrame implements Observer
             switch(nombreProductoActual){
                 case "93":
                     this.text93.setText(valor+"");
-                    break;               
+                    break;         
+                case "95":
+                    this.text95.setText(valor+"");
+                    break;
+                case "97":
+                    this.text97.setText(valor+"");
+                    break;
+                case "diesel":
+                    this.textDiesel.setText(valor+"");
+                    break;
+                case "kerosene":
+                    this.textKerosene.setText(valor+"");
+                    break;
+                 
             }          
         }
     }

@@ -5,15 +5,20 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class InterfazSucursal extends javax.swing.JFrame implements Observer{
-
+    
+    private SucursalServidor servidor;
+    private SucursalCliente sucursal;
     private String nombreProductoActual;
-    private Double factorActual=0.0;
+    private Double factorActual=0.2;
     public InterfazSucursal() {
         initComponents();
-        Sucursal sucursal = new Sucursal(5000);
+        sucursal = new SucursalCliente(5000);
+        servidor = new SucursalServidor(5001);        
         sucursal.addObserver(this);
         Thread t = new Thread(sucursal);
         t.start();
+        Thread t2 = new Thread(servidor);
+        t2.start();
         
     }
 
@@ -177,7 +182,17 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
     }// </editor-fold>//GEN-END:initComponents
 
     private void setFactorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setFactorActionPerformed
-        // TODO add your handling code here:
+        System.out.println("Boton Actualizar presionado..");
+        this.factorActual = Double.parseDouble(this.textFactor.getText())/100;
+        double noventatres = Double.parseDouble(text93.getText())*(1+factorActual);
+        double noventacinco = Double.parseDouble(text95.getText())*(1+factorActual);
+        double noventasiete = Double.parseDouble(text97.getText())*(1+factorActual);
+        double diesel = Double.parseDouble(textDiesel.getText())*(1+factorActual);
+        double kerosene = Double.parseDouble(textKerosene.getText())*(1+factorActual);
+        
+        String[] nombres = {"93","95","97","diesel","kerosene"};
+        double[] valores = {noventatres,noventacinco,noventasiete,diesel,kerosene};
+        servidor.enviarInfo(nombres, valores);
     }//GEN-LAST:event_setFactorActionPerformed
 
     private void text97ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text97ActionPerformed
@@ -252,19 +267,19 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
             double valor = (double) arg1;
             switch(nombreProductoActual){
                 case "93":
-                    this.text93.setText(valor*(1+factorActual)+"");
+                    this.text93.setText(valor+"");
                     break;         
                 case "95":
-                    this.text95.setText(valor*(1+factorActual)+"");
+                    this.text95.setText(valor+"");
                     break;
                 case "97":
-                    this.text97.setText(valor*(1+factorActual)+"");
+                    this.text97.setText(valor+"");
                     break;
                 case "diesel":
-                    this.textDiesel.setText(valor*(1+factorActual)+"");
+                    this.textDiesel.setText(valor+"");
                     break;
                 case "kerosene":
-                    this.textKerosene.setText(valor*(1+factorActual)+"");
+                    this.textKerosene.setText(valor+"");
                     break;
                  
             }          

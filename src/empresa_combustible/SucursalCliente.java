@@ -3,16 +3,13 @@ package empresa_combustible;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Observable;
 
-public class Sucursal extends Observable implements Runnable{
+public class SucursalCliente extends Observable implements Runnable{
     
-    private ArrayList<Socket> distribuidores;
     private int puerto;
-    private String HOST = "localhost";
+    private final String HOST = "localhost";
     private DataInputStream in;
     private DataOutputStream out;   
     private Socket cliente;
@@ -20,26 +17,26 @@ public class Sucursal extends Observable implements Runnable{
     private double valor;
 
 
-    public Sucursal(int puerto) {
-        this.puerto = puerto;
-        this.distribuidores = new ArrayList<>();       
+    public SucursalCliente(int puerto) {
+        this.puerto = puerto;       
     }
     
     @Override
     public void run(){
         try {
             cliente = new Socket(HOST,puerto);
+            System.out.println("sucursal conectandose a: "+HOST+":"+puerto);
             in = new DataInputStream(cliente.getInputStream());
             while (true) {                
-                System.out.println("Escuchando datos..");
+                System.out.println("Esperando datos..");
                 nombreTag = in.readUTF();
-                System.out.println("recibiendo nametag");
+                System.out.println("recibiendo nametag: "+nombreTag);
                 this.setChanged();
                 this.notifyObservers(nombreTag);
                 this.clearChanged();
                 
                 valor = in.readDouble();
-                System.out.println("recibiendo valor");
+                System.out.println("recibiendo valor: "+valor);
                 this.setChanged();
                 this.notifyObservers(valor);
                 this.clearChanged();
@@ -47,19 +44,5 @@ public class Sucursal extends Observable implements Runnable{
         } catch (Exception e) {
             System.err.println("Error en iniciar Sucursal: "+e.getMessage());
         }
-    }
-    
-    public void enviarInfo(){
-        System.out.println("Enviando info..");
-        for (Socket dist : distribuidores) {
-            try {
-                out = new DataOutputStream(dist.getOutputStream());
-                System.out.println("Escribiendo nametag");
-                out.writeUTF("93");
-                System.out.println("Escribiendo valor");
-                out.writeDouble(200);                            
-            } catch (Exception e) {
-            }
-        }
-    }  
+    } 
 }
