@@ -9,6 +9,7 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
     private Servidor servidor;
     private Sucursal sucursal;
     private Dialog_setIp dialog;
+    private int puerto;
     private String nombreProductoActual;
     private Double factorActual=0.2;
     
@@ -16,7 +17,8 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
         initComponents();
         this.setVisible(true);
         abrirDialog();
-        sucursal = new Sucursal(5000, dialog.getDireccion_ip());
+        puerto = Integer.parseInt(dialog.getPuerto());
+        sucursal = new Sucursal(puerto, dialog.getDireccion_ip());
         servidor = new Servidor(5001);        
         sucursal.addObserver(this);
         Thread t = new Thread(sucursal);

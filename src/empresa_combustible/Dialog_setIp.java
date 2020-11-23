@@ -12,6 +12,7 @@ package empresa_combustible;
 public class Dialog_setIp extends javax.swing.JDialog {
     
     private String direccion_ip;
+    private String puerto;
     
     public Dialog_setIp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -30,6 +31,9 @@ public class Dialog_setIp extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         text_IP = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        text_puerto = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("IP servidor");
@@ -50,36 +54,53 @@ public class Dialog_setIp extends javax.swing.JDialog {
             }
         });
 
-        jLabel1.setText("Ingrese la direccion IP de Servidor");
+        jLabel1.setText("Ingrese la direccion IP y Puerto de Servidor");
+
+        text_puerto.setText("5000");
+        text_puerto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                text_puertoActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Puerto:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(text_IP, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50))
-            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(88, 88, 88)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jLabel1)))
-                .addContainerGap(32, Short.MAX_VALUE))
+                        .addComponent(text_IP, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(text_puerto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addGap(35, 35, 35))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(99, 99, 99)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
+                .addGap(28, 28, 28)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(text_IP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(text_IP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(text_puerto, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addGap(19, 19, 19))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         pack();
@@ -87,6 +108,7 @@ public class Dialog_setIp extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.direccion_ip = text_IP.getText();
+        this.puerto = text_puerto.getText();
         System.out.println("direccion ip seteada: "+direccion_ip);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -95,6 +117,10 @@ public class Dialog_setIp extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_text_IPActionPerformed
 
+    private void text_puertoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_puertoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_text_puertoActionPerformed
+
     public String getDireccion_ip() {
         return direccion_ip;
     }
@@ -102,10 +128,23 @@ public class Dialog_setIp extends javax.swing.JDialog {
     public void setDireccion_ip(String direccion_ip) {
         this.direccion_ip = direccion_ip;
     }
+
+    public String getPuerto() {
+        return puerto;
+    }
+
+    public void setPuerto(String puerto) {
+        this.puerto = puerto;
+    }
+    
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField text_IP;
+    private javax.swing.JTextField text_puerto;
     // End of variables declaration//GEN-END:variables
 }
