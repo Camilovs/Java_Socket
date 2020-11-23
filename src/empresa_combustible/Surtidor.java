@@ -17,16 +17,14 @@ import java.util.Observable;
 public class Surtidor extends Observable implements Runnable{
     
     private int puerto;
-    private String HOST = "localhost";
+    private String HOST;
     private Socket cliente;
     private DataInputStream in;
     private DataOutputStream out;
     private String nombreTag;
     private double valor;
 
-    public Surtidor(int puerto) {
-        this.puerto = puerto;
-    }
+    
     public Surtidor(int puerto, String host) {
         this.puerto = puerto;
         this.HOST = host;

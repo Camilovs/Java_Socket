@@ -9,17 +9,13 @@ import java.util.Observable;
 public class Sucursal extends Observable implements Runnable{
     
     private int puerto;
-    private String HOST = "localhost";
+    private String HOST;
     private DataInputStream in;
     private DataOutputStream out;   
     private Socket cliente;
     private String nombreTag;
     private double valor;
 
-
-    public Sucursal(int puerto) {
-        this.puerto = puerto;       
-    }
     public Sucursal(int puerto, String host) {
         this.puerto = puerto;   
         this.HOST = host;

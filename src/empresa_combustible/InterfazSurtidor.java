@@ -15,9 +15,12 @@ import java.util.Observer;
 public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
 
     private String nombreProductoActual;
+    private Dialog_setIp dialog;
     public InterfazSurtidor() {
         initComponents();
-        Surtidor distribuidor = new Surtidor(5001);
+        this.setVisible(true);
+        abrirDialog();
+        Surtidor distribuidor = new Surtidor(5001,dialog.getDireccion_ip());
         distribuidor.addObserver(this);
         Thread t = new Thread(distribuidor);
         t.start();       
@@ -235,7 +238,7 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InterfazSurtidor().setVisible(true);
+                new InterfazSurtidor();
             }
         });
     }
@@ -257,7 +260,17 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
     private javax.swing.JTextField textDiesel;
     private javax.swing.JTextField textKerosene;
     // End of variables declaration//GEN-END:variables
-
+    private void abrirDialog(){
+        
+        dialog = new Dialog_setIp(this, true);
+        dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                System.exit(0);
+            }
+        });
+        dialog.setVisible(true);        
+    }
     @Override
     public void update(Observable arg0, Object arg) {
         if (arg instanceof String) {

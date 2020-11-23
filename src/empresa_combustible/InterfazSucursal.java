@@ -8,12 +8,15 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
     
     private Servidor servidor;
     private Sucursal sucursal;
+    private Dialog_setIp dialog;
     private String nombreProductoActual;
     private Double factorActual=0.2;
     
     public InterfazSucursal() {
         initComponents();
-        sucursal = new Sucursal(5000);
+        this.setVisible(true);
+        abrirDialog();
+        sucursal = new Sucursal(5000, dialog.getDireccion_ip());
         servidor = new Servidor(5001);        
         sucursal.addObserver(this);
         Thread t = new Thread(sucursal);
@@ -240,7 +243,7 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InterfazSucursal().setVisible(true);
+                new InterfazSucursal();
             }
         });
     }
@@ -261,7 +264,17 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
     private javax.swing.JTextField textFactor;
     private javax.swing.JTextField textKerosene;
     // End of variables declaration//GEN-END:variables
+    private void abrirDialog(){
 
+            dialog = new Dialog_setIp(this, true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);        
+        }
     @Override
     public void update(Observable arg0, Object arg1) {
         if (arg1 instanceof String) {

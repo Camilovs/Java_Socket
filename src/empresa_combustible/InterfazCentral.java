@@ -12,12 +12,15 @@ package empresa_combustible;
 public class InterfazCentral extends javax.swing.JFrame {
     
     private Servidor servidor;
+    private Dialog_setIp dialog;
     /**
      * Creates new form InterfazCentral
      */
-    public InterfazCentral() {
+    public InterfazCentral() {   
         initComponents();
-        servidor = new Servidor(5000);
+        this.setVisible(true);
+        //abrirDialog();
+        servidor = new Servidor(5000);  
         Thread t = new Thread(servidor);
         t.start();
     }
@@ -156,7 +159,18 @@ public class InterfazCentral extends javax.swing.JFrame {
         double[] valores = {noventatres,noventacinco,noventasiete,diesel,kerosene};
         servidor.enviarInfo(nombres, valores);
     }//GEN-LAST:event_actualizarActionPerformed
-
+    
+    private void abrirDialog(){
+        
+        dialog = new Dialog_setIp(this, true);
+        dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                System.exit(0);
+            }
+        });
+        dialog.setVisible(true);        
+    }
     /**
      * @param args the command line arguments
      */
@@ -186,12 +200,13 @@ public class InterfazCentral extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new InterfazCentral().setVisible(true);
+                InterfazCentral interfazCentral = new InterfazCentral();
             }
         });
     }
-
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton actualizar;
     private javax.swing.JMenu jMenu1;
