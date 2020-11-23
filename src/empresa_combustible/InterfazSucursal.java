@@ -6,14 +6,15 @@ import java.util.Observer;
 
 public class InterfazSucursal extends javax.swing.JFrame implements Observer{
     
-    private SucursalServidor servidor;
-    private SucursalCliente sucursal;
+    private Servidor servidor;
+    private Sucursal sucursal;
     private String nombreProductoActual;
     private Double factorActual=0.2;
+    
     public InterfazSucursal() {
         initComponents();
-        sucursal = new SucursalCliente(5000);
-        servidor = new SucursalServidor(5001);        
+        sucursal = new Sucursal(5000);
+        servidor = new Servidor(5001);        
         sucursal.addObserver(this);
         Thread t = new Thread(sucursal);
         t.start();
@@ -47,6 +48,8 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Sucursal");
+        setResizable(false);
 
         jLabel1.setText("Factor Ajuste (%)");
 

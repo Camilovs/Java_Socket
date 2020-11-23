@@ -6,10 +6,10 @@ import java.io.DataOutputStream;
 import java.net.Socket;
 import java.util.Observable;
 
-public class SucursalCliente extends Observable implements Runnable{
+public class Sucursal extends Observable implements Runnable{
     
     private int puerto;
-    private final String HOST = "localhost";
+    private String HOST = "localhost";
     private DataInputStream in;
     private DataOutputStream out;   
     private Socket cliente;
@@ -17,8 +17,12 @@ public class SucursalCliente extends Observable implements Runnable{
     private double valor;
 
 
-    public SucursalCliente(int puerto) {
+    public Sucursal(int puerto) {
         this.puerto = puerto;       
+    }
+    public Sucursal(int puerto, String host) {
+        this.puerto = puerto;   
+        this.HOST = host;
     }
     
     @Override
@@ -44,5 +48,22 @@ public class SucursalCliente extends Observable implements Runnable{
         } catch (Exception e) {
             System.err.println("Error en iniciar Sucursal: "+e.getMessage());
         }
-    } 
+    }
+
+    public int getPuerto() {
+        return puerto;
+    }
+
+    public void setPuerto(int puerto) {
+        this.puerto = puerto;
+    }
+
+    public String getHOST() {
+        return HOST;
+    }
+
+    public void setHOST(String HOST) {
+        this.HOST = HOST;
+    }
+    
 }

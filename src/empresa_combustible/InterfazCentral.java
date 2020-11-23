@@ -11,13 +11,13 @@ package empresa_combustible;
  */
 public class InterfazCentral extends javax.swing.JFrame {
     
-    private ServidorCentral servidor;
+    private Servidor servidor;
     /**
      * Creates new form InterfazCentral
      */
     public InterfazCentral() {
         initComponents();
-        servidor = new ServidorCentral(5000);
+        servidor = new Servidor(5000);
         Thread t = new Thread(servidor);
         t.start();
     }
@@ -47,6 +47,8 @@ public class InterfazCentral extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Central");
+        setResizable(false);
 
         tag97.setText("97");
 

@@ -12,10 +12,10 @@ import java.util.Observer;
  *
  * @author Camilo
  */
-public class InterfazDistribuidor extends javax.swing.JFrame implements Observer{
+public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
 
     private String nombreProductoActual;
-    public InterfazDistribuidor() {
+    public InterfazSurtidor() {
         initComponents();
         Surtidor distribuidor = new Surtidor(5001);
         distribuidor.addObserver(this);
@@ -49,6 +49,8 @@ public class InterfazDistribuidor extends javax.swing.JFrame implements Observer
         cargarKerosene = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Surtidor");
+        setResizable(false);
 
         tag93.setText("93");
 
@@ -217,20 +219,23 @@ public class InterfazDistribuidor extends javax.swing.JFrame implements Observer
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InterfazDistribuidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InterfazSurtidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InterfazDistribuidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InterfazSurtidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InterfazDistribuidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InterfazSurtidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InterfazDistribuidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InterfazSurtidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InterfazDistribuidor().setVisible(true);
+                new InterfazSurtidor().setVisible(true);
             }
         });
     }

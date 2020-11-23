@@ -10,10 +10,14 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Observable;
 
+/**
+ *
+ * @author Camilo
+ */
 public class Surtidor extends Observable implements Runnable{
     
     private int puerto;
-    private final String HOST = "localhost";
+    private String HOST = "localhost";
     private Socket cliente;
     private DataInputStream in;
     private DataOutputStream out;
@@ -22,6 +26,10 @@ public class Surtidor extends Observable implements Runnable{
 
     public Surtidor(int puerto) {
         this.puerto = puerto;
+    }
+    public Surtidor(int puerto, String host) {
+        this.puerto = puerto;
+        this.HOST = host;
     }
     
     @Override
