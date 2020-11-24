@@ -5,8 +5,11 @@
  */
 package empresa_combustible;
 
+import static java.lang.Double.parseDouble;
+import static java.lang.Float.parseFloat;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.JFrame;
 
 /**
  *
@@ -191,6 +194,10 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
 
     private void cargar93ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargar93ActionPerformed
         // TODO add your handling code here:
+        JFrame interfaz = new InterfazCargar("Bencina 93", parseDouble(text93.getText()));
+        interfaz.setVisible(true);
+        
+        
     }//GEN-LAST:event_cargar93ActionPerformed
 
     private void cargar95ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargar95ActionPerformed
