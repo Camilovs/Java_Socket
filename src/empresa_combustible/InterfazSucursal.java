@@ -14,6 +14,7 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
     private Double factorActual=0.2;
     
     public InterfazSucursal() {
+        setLocationRelativeTo(null);
         initComponents();
         this.setVisible(true);
         abrirDialog();
@@ -269,6 +270,7 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
     private void abrirDialog(){
 
             dialog = new Dialog_setIp(this, true);
+            dialog.setLocationRelativeTo(null);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {

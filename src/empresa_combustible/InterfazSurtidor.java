@@ -20,6 +20,7 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
     private String nombreProductoActual;
     private Dialog_setIp dialog;
     public InterfazSurtidor() {
+        setLocationRelativeTo(null);
         initComponents();
         this.setVisible(true);
         abrirDialog();
@@ -101,12 +102,22 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
         textDiesel.setFocusable(false);
 
         cargarDiesel.setText("Cargar");
+        cargarDiesel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cargarDieselActionPerformed(evt);
+            }
+        });
 
         tagKerosene.setText("Kerosene");
 
         textKerosene.setFocusable(false);
 
         cargarKerosene.setText("Cargar");
+        cargarKerosene.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cargarKeroseneActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -196,21 +207,35 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
         // TODO add your handling code here:
         JFrame interfaz = new InterfazCargar("Bencina 93", parseDouble(text93.getText()));
         interfaz.setVisible(true);
-        
-        
     }//GEN-LAST:event_cargar93ActionPerformed
 
     private void cargar95ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargar95ActionPerformed
         // TODO add your handling code here:
+        JFrame interfaz = new InterfazCargar("Bencina 95", parseDouble(text95.getText()));
+        interfaz.setVisible(true);
     }//GEN-LAST:event_cargar95ActionPerformed
 
     private void cargar97ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargar97ActionPerformed
         // TODO add your handling code here:
+        JFrame interfaz = new InterfazCargar("Bencina 97", parseDouble(text97.getText()));
+        interfaz.setVisible(true);
     }//GEN-LAST:event_cargar97ActionPerformed
 
     private void text97ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text97ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_text97ActionPerformed
+
+    private void cargarDieselActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarDieselActionPerformed
+        // TODO add your handling code here:
+        JFrame interfaz = new InterfazCargar("Diesel", parseDouble(textDiesel.getText()));
+        interfaz.setVisible(true);
+    }//GEN-LAST:event_cargarDieselActionPerformed
+
+    private void cargarKeroseneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarKeroseneActionPerformed
+        // TODO add your handling code here:
+        JFrame interfaz = new InterfazCargar("Bencina 93", parseDouble(textKerosene.getText()));
+        interfaz.setVisible(true);
+    }//GEN-LAST:event_cargarKeroseneActionPerformed
 
     /**
      * @param args the command line arguments
@@ -270,6 +295,7 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
     private void abrirDialog(){
         
         dialog = new Dialog_setIp(this, true);
+        dialog.setLocationRelativeTo(null);
         dialog.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
