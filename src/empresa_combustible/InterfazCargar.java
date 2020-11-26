@@ -7,8 +7,10 @@ package empresa_combustible;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
+import javax.swing.JRootPane;
 
 /**
  *
@@ -20,6 +22,9 @@ public class InterfazCargar extends javax.swing.JFrame {
      * Creates new form InterfazCargar
      */
     public InterfazCargar(String combustible, double precioActual) {
+        setResizable(false);
+        setTitle("Estación de Cargado");
+        setLocationRelativeTo(null);
         initComponents();
         cargandoLabel.setVisible(false);
         precioField.setText(String.valueOf(precioActual));

@@ -16,7 +16,8 @@ public class InterfazCentral extends javax.swing.JFrame {
     /**
      * Creates new form InterfazCentral
      */
-    public InterfazCentral() {   
+    public InterfazCentral() {
+        setLocationRelativeTo(null);
         initComponents();
         this.setVisible(true);
         //abrirDialog();
