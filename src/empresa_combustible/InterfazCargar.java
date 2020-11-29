@@ -7,6 +7,7 @@ package empresa_combustible;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
@@ -205,12 +206,28 @@ public class InterfazCargar extends javax.swing.JFrame {
 
     private void updateFinalPriceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateFinalPriceButtonActionPerformed
         // TODO add your handling code here:
-        double precioCombustible = Double.valueOf(precioField.getText());
-        double litros = Double.valueOf(litrosField.getText());
-        double precioCalculado = precioCombustible*litros;
+        Double precioCombustible = Double.valueOf(precioField.getText());
+        Double litros = Double.valueOf(litrosField.getText());
+        Double precioCalculado = precioCombustible*litros;
         finalPriceField.setText(String.valueOf(precioCalculado));
+        String id_surtidor = "S01";
+        String id_combustible = "Diesel";
+        System.out.println(id_surtidor);
+        ConexionDB conector = new ConexionDB();
+        try {
+            conector.cargaCombustible(1, precioCombustible, litros, precioCalculado, id_surtidor, id_combustible);
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(InterfazCargar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        try {
+            conector.printReporte();
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(InterfazCargar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        
+ 
     }//GEN-LAST:event_updateFinalPriceButtonActionPerformed
-
+    
     private void cancelarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarButtonActionPerformed
         // TODO add your handling code here:
         dispose();
@@ -257,6 +274,7 @@ public class InterfazCargar extends javax.swing.JFrame {
     int num_bar = 1;
     
     @Override
+    @SuppressWarnings("null")
     public void run() {
         for (int i = 1; i <= 100; i++)
         {   
