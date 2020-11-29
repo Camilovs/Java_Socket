@@ -12,15 +12,19 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
     private int puerto;
     private String nombreProductoActual;
     private Double factorActual=0.2;
+    private String idSucursal = "SSAL";
     
     public InterfazSucursal() {
+        setLocationRelativeTo(null);
         initComponents();
         this.setVisible(true);
-        abrirDialog();
+        abrirDialog("Sucursal");
         puerto = Integer.parseInt(dialog.getPuerto());
         sucursal = new Sucursal(puerto, dialog.getDireccion_ip());
         servidor = new Servidor(5001);        
         sucursal.addObserver(this);
+        idSucursal+=dialog.getIdKey();
+        idSucursalField.setText(idSucursal);
         Thread t = new Thread(sucursal);
         t.start();
         Thread t2 = new Thread(servidor);
@@ -51,6 +55,8 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
         tag99 = new javax.swing.JLabel();
         textKerosene = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        idSucursalField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sucursal");
@@ -104,6 +110,15 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
 
         jLabel2.setText("Precios Live:");
 
+        jLabel3.setText("ID Sucursal:");
+
+        idSucursalField.setEditable(false);
+        idSucursalField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idSucursalFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -148,7 +163,12 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
                                 .addGap(44, 44, 44))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(textFactor, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(59, 59, 59))))))
+                                .addGap(59, 59, 59))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(idSucursalField, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,7 +203,11 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tag99)
                     .addComponent(textKerosene, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(idSucursalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -214,6 +238,10 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
     private void textKeroseneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textKeroseneActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_textKeroseneActionPerformed
+
+    private void idSucursalFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idSucursalFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_idSucursalFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -251,8 +279,10 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField idSucursalField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JButton setFactor;
     private javax.swing.JLabel tag93;
     private javax.swing.JLabel tag95;
@@ -266,9 +296,10 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
     private javax.swing.JTextField textFactor;
     private javax.swing.JTextField textKerosene;
     // End of variables declaration//GEN-END:variables
-    private void abrirDialog(){
+    private void abrirDialog(String tipo){
 
-            dialog = new Dialog_setIp(this, true);
+            dialog = new Dialog_setIp(this, true, tipo);
+            dialog.setLocationRelativeTo(null);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
