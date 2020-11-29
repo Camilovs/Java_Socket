@@ -31,6 +31,7 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
         distribuidor.addObserver(this);
         idSurtidor+=dialog.getIdKey();
         idSurtidorField.setText(idSurtidor);
+        idSucursalField.setText(idSucursal);
         Thread t = new Thread(distribuidor);
         t.start();       
     }
@@ -61,6 +62,8 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
         cargarKerosene = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         idSurtidorField = new javax.swing.JTextField();
+        idSucursalField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Surtidor");
@@ -135,6 +138,10 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
             }
         });
 
+        idSucursalField.setEditable(false);
+
+        jLabel1.setText("ID Sucursal:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -152,7 +159,11 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
                             .addComponent(text93, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cargar97)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cargar97)
+                                .addGap(80, 80, 80)
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cargar95)
@@ -178,8 +189,10 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(idSurtidorField, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(idSucursalField)
+                    .addComponent(idSurtidorField, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
                 .addGap(19, 19, 19))
         );
         layout.setVerticalGroup(
@@ -218,7 +231,9 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(text97, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cargar97))
+                    .addComponent(cargar97)
+                    .addComponent(idSucursalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -311,7 +326,9 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
     private javax.swing.JButton cargar97;
     private javax.swing.JButton cargarDiesel;
     private javax.swing.JButton cargarKerosene;
+    private javax.swing.JTextField idSucursalField;
     private javax.swing.JTextField idSurtidorField;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel tag93;
     private javax.swing.JLabel tag95;
