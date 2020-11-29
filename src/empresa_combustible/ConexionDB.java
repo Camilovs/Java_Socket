@@ -107,22 +107,27 @@ public class ConexionDB {
     
     /**
      * Metodo para registrar las cargas de combustibles
+     * @param idSucursal
      * @param sucursal Sucursal en donde se realizara la compra
      * @param precioLitro Precio por litro de un determinado combustible (ajuste aplicado)
      * @param litrosCarga Cantidad de litros que se cargan
      * @param totalPagar Total que se debe cancelar
      * @param id_surtidor Surtidor en el cual se realizo la carga de combustible
+     * @param id_combustible
      * @throws SQLException 
      */
-    public void cargaCombustible(int sucursal, double precioLitro, double litrosCarga, double totalPagar, String id_surtidor, String id_combustible) throws SQLException {
-        String id_sucursal = "";
-        System.out.println("La sucursalita es:");
-        System.out.println(sucursal);
+    public void cargaCombustible(String idSucursal, double precioLitro, double litrosCarga, double totalPagar, String id_surtidor, String id_combustible) throws SQLException {
+
+        System.out.println("La sucursal es:");
         
+        System.out.println("Enviando información a base de datos LOCAL");
         //Condiciones para determinar que sucursal se esta trabajando
-        if (sucursal == 1) {abrirConexionSucursal1(); id_sucursal = "Su01";}
-        if (sucursal == 2) {abrirConexionSucursal2(); id_sucursal = "Su02";}
-        if (sucursal == 3) {abrirConexionSucursal3(); id_sucursal = "Su03";}
+        if (idSucursal.equals("SSAL001"))
+            abrirConexionSucursal1();
+        if (idSucursal.equals("SSAL002"))
+            abrirConexionSucursal2();
+        if (idSucursal.equals("SSAL003"))
+            abrirConexionSucursal3();
 
         //Statement s = conexion.createStatement(); //Se crea la instancia para empezar a enviar las consultas
         //String test = precioLitro+","+litrosCarga+","+totalPagar;//+","+id_surtidor;
@@ -139,13 +144,15 @@ public class ConexionDB {
         //s.executeUpdate("INSERT INTO Surtidor VALUES ("+test+")"); //Consulta que registra la compra
         conexion.close(); //Cierre de la conexion con la sucursal
         //Inicio de conexion con la central para informar de la compra en el surtidor X de la sucursal Y
+        //
+        System.out.println("Enviando información a base de datos CENTRAL");
         abrirConexionCentral();
         PreparedStatement declara1 =  (PreparedStatement) conexion.prepareStatement("INSERT INTO Surtidor VALUES (?,?,?,?,?,?)");
         declara1.setDouble(1, precioLitro);
         declara1.setDouble(2, litrosCarga);
         declara1.setDouble(3, totalPagar);
         declara1.setString(4, id_surtidor);
-        declara1.setString(5, id_sucursal);
+        declara1.setString(5, idSucursal);
         declara1.setString(6, id_combustible);
         declara1.executeUpdate();
         //s = conexion.createStatement(); //Se crea la instancia para empezar a enviar las consultas
@@ -161,6 +168,21 @@ public class ConexionDB {
         while (rs.next()) {
             System.out.println (rs.getString (1) + " " + rs.getString (2) + " " + rs.getString (3) + " " + rs.getString (4) + " " + rs.getString (5) + " " + rs.getString (6));
         }
+    }
+    
+    public ResultSet getReporte(int idBD) throws SQLException {
+        if (idBD==0)
+            abrirConexionCentral();
+        if (idBD==1)
+            abrirConexionSucursal1();
+        if (idBD==2)
+            abrirConexionSucursal2();
+        if (idBD==3)
+            abrirConexionSucursal3();
+        
+        Statement s = conexion.createStatement();
+        ResultSet rs = s.executeQuery ("select * from Surtidor");
+        return rs;
     }
     
     /**

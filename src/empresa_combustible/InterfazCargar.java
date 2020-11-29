@@ -22,13 +22,25 @@ public class InterfazCargar extends javax.swing.JFrame {
     /**
      * Creates new form InterfazCargar
      */
-    public InterfazCargar(String combustible, double precioActual) {
+    
+    double precioCombustible;
+    double precioCalculado;
+    double litros;
+    String combustible;
+    String idSurtidor;
+    String idSucursal;
+    
+    public InterfazCargar(String combustible, double precioActual, String idSurtidor, String idSucursal) {
         setResizable(false);
         setTitle("Estación de Cargado");
         setLocationRelativeTo(null);
         initComponents();
+        this.idSurtidor=idSurtidor;
+        this.idSucursal=idSucursal;
         cargandoLabel.setVisible(false);
         precioField.setText(String.valueOf(precioActual));
+        precioCombustible=precioActual;
+        this.combustible=combustible;
         combustibleLabel.setText(combustible);
     }
 
@@ -206,26 +218,11 @@ public class InterfazCargar extends javax.swing.JFrame {
 
     private void updateFinalPriceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateFinalPriceButtonActionPerformed
         // TODO add your handling code here:
-        Double precioCombustible = Double.valueOf(precioField.getText());
-        Double litros = Double.valueOf(litrosField.getText());
-        Double precioCalculado = precioCombustible*litros;
-        finalPriceField.setText(String.valueOf(precioCalculado));
-        String id_surtidor = "S01";
-        String id_combustible = "Diesel";
-        System.out.println(id_surtidor);
-        ConexionDB conector = new ConexionDB();
-        try {
-            conector.cargaCombustible(1, precioCombustible, litros, precioCalculado, id_surtidor, id_combustible);
-        } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(InterfazCargar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        try {
-            conector.printReporte();
-        } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(InterfazCargar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
         
- 
+        litros = Double.valueOf(litrosField.getText());
+        precioCalculado = precioCombustible*litros;
+        finalPriceField.setText(String.valueOf(precioCalculado));
+       
     }//GEN-LAST:event_updateFinalPriceButtonActionPerformed
     
     private void cancelarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarButtonActionPerformed
@@ -263,9 +260,18 @@ public class InterfazCargar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InterfazCargar("Test", 2.5).setVisible(true);
+                new InterfazCargar("Test", 2.5,"TEST", "SSAL01").setVisible(true);
             }
         });
+    }
+    
+    private void actualizaBD(){
+        ConexionDB conector = new ConexionDB();
+        try {
+            conector.cargaCombustible(idSucursal, precioCombustible, litros, precioCalculado, idSurtidor, combustible);
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(InterfazCargar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
     }
     
     class BarraCargando implements Runnable {
@@ -285,6 +291,10 @@ public class InterfazCargar extends javax.swing.JFrame {
             }
 
             this.getBar().setValue(i);
+            
+            if (i==50){
+                actualizaBD();
+            }
             
             if (this.getBar().getValue() == 100)
             {

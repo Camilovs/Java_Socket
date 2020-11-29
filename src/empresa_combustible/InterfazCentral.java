@@ -5,6 +5,10 @@
  */
 package empresa_combustible;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Camilo
@@ -20,7 +24,7 @@ public class InterfazCentral extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         initComponents();
         this.setVisible(true);
-        //abrirDialog();
+        //abrirDialog("Central");
         servidor = new Servidor(5000);  
         Thread t = new Thread(servidor);
         t.start();
@@ -80,6 +84,11 @@ public class InterfazCentral extends javax.swing.JFrame {
         jMenu1.setText("Acción");
 
         jMenuItem1.setText("Reporte");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
@@ -160,10 +169,22 @@ public class InterfazCentral extends javax.swing.JFrame {
         double[] valores = {noventatres,noventacinco,noventasiete,diesel,kerosene};
         servidor.enviarInfo(nombres, valores);
     }//GEN-LAST:event_actualizarActionPerformed
-    
-    private void abrirDialog(){
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        try {
+            // TODO add your handling code here:
+
+            Reportes interfaz = new Reportes();
+            interfaz.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(InterfazCentral.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        dialog = new Dialog_setIp(this, true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    
+    private void abrirDialog(String tipo){
+        
+        dialog = new Dialog_setIp(this, true, tipo);
         dialog.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
