@@ -7,8 +7,11 @@ package empresa_combustible;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.sql.SQLException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
+import javax.swing.JRootPane;
 
 /**
  *
@@ -19,10 +22,25 @@ public class InterfazCargar extends javax.swing.JFrame {
     /**
      * Creates new form InterfazCargar
      */
-    public InterfazCargar(String combustible, double precioActual) {
+    
+    double precioCombustible;
+    double precioCalculado;
+    double litros;
+    String combustible;
+    String idSurtidor;
+    String idSucursal;
+    
+    public InterfazCargar(String combustible, double precioActual, String idSurtidor, String idSucursal) {
+        setResizable(false);
+        setTitle("Estación de Cargado");
+        setLocationRelativeTo(null);
         initComponents();
+        this.idSurtidor=idSurtidor;
+        this.idSucursal=idSucursal;
         cargandoLabel.setVisible(false);
         precioField.setText(String.valueOf(precioActual));
+        precioCombustible=precioActual;
+        this.combustible=combustible;
         combustibleLabel.setText(combustible);
     }
 
@@ -200,12 +218,13 @@ public class InterfazCargar extends javax.swing.JFrame {
 
     private void updateFinalPriceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateFinalPriceButtonActionPerformed
         // TODO add your handling code here:
-        double precioCombustible = Double.valueOf(precioField.getText());
-        double litros = Double.valueOf(litrosField.getText());
-        double precioCalculado = precioCombustible*litros;
+        
+        litros = Double.valueOf(litrosField.getText());
+        precioCalculado = precioCombustible*litros;
         finalPriceField.setText(String.valueOf(precioCalculado));
+       
     }//GEN-LAST:event_updateFinalPriceButtonActionPerformed
-
+    
     private void cancelarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarButtonActionPerformed
         // TODO add your handling code here:
         dispose();
@@ -241,9 +260,18 @@ public class InterfazCargar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InterfazCargar("Test", 2.5).setVisible(true);
+                new InterfazCargar("Test", 2.5,"TEST", "SSAL01").setVisible(true);
             }
         });
+    }
+    
+    private void actualizaBD(){
+        ConexionDB conector = new ConexionDB();
+        try {
+            conector.cargaCombustible(idSucursal, precioCombustible, litros, precioCalculado, idSurtidor, combustible);
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(InterfazCargar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
     }
     
     class BarraCargando implements Runnable {
@@ -252,6 +280,7 @@ public class InterfazCargar extends javax.swing.JFrame {
     int num_bar = 1;
     
     @Override
+    @SuppressWarnings("null")
     public void run() {
         for (int i = 1; i <= 100; i++)
         {   
@@ -262,6 +291,10 @@ public class InterfazCargar extends javax.swing.JFrame {
             }
 
             this.getBar().setValue(i);
+            
+            if (i==50){
+                actualizaBD();
+            }
             
             if (this.getBar().getValue() == 100)
             {

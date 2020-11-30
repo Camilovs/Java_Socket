@@ -15,17 +15,27 @@ import javax.swing.JFrame;
  *
  * @author Camilo
  */
+        
 public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
-
+    
     private String nombreProductoActual;
+    private String idSurtidor = "SDOR";
+    private String idSucursal;
     private Dialog_setIp dialog;
+    private Surtidor surtidor;
+    private int puerto;
     public InterfazSurtidor() {
+        setLocationRelativeTo(null);
         initComponents();
         this.setVisible(true);
-        abrirDialog();
-        Surtidor distribuidor = new Surtidor(5001,dialog.getDireccion_ip());
-        distribuidor.addObserver(this);
-        Thread t = new Thread(distribuidor);
+        abrirDialog("Surtidor");
+        puerto = Integer.parseInt(dialog.getPuerto());
+        surtidor = new Surtidor(puerto,dialog.getDireccion_ip());
+        surtidor.addObserver(this);
+        labelIPDataRecibe.setText(dialog.getDireccion_ip()+":"+dialog.getPuerto());
+        idSurtidor+=dialog.getIdKey();
+        idSurtidorField.setText(idSurtidor);    
+        Thread t = new Thread(surtidor);
         t.start();       
     }
 
@@ -53,6 +63,12 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
         tagKerosene = new javax.swing.JLabel();
         textKerosene = new javax.swing.JTextField();
         cargarKerosene = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        idSurtidorField = new javax.swing.JTextField();
+        idSucursalField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        labelIPDataRecibe = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Surtidor");
@@ -101,12 +117,41 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
         textDiesel.setFocusable(false);
 
         cargarDiesel.setText("Cargar");
+        cargarDiesel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cargarDieselActionPerformed(evt);
+            }
+        });
 
         tagKerosene.setText("Kerosene");
 
         textKerosene.setFocusable(false);
 
         cargarKerosene.setText("Cargar");
+        cargarKerosene.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cargarKeroseneActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("ID Surtidor:");
+
+        idSurtidorField.setEditable(false);
+        idSurtidorField.setFocusable(false);
+        idSurtidorField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idSurtidorFieldActionPerformed(evt);
+            }
+        });
+
+        idSucursalField.setEditable(false);
+        idSucursalField.setFocusable(false);
+
+        jLabel1.setText("ID Sucursal:");
+
+        jLabel4.setText("Recibiendo Datos de:");
+
+        labelIPDataRecibe.setText("IP");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -115,9 +160,18 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
             .addGroup(layout.createSequentialGroup()
                 .addGap(58, 58, 58)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tag95)
-                    .addComponent(tag97)
-                    .addComponent(tag93)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addComponent(idSucursalField, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(117, 117, 117)
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(idSurtidorField, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(text97, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
@@ -125,7 +179,9 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
                             .addComponent(text93, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cargar97)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cargar97)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cargar95)
@@ -146,8 +202,20 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
                                             .addGap(85, 85, 85))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                             .addComponent(tagDiesel)
-                                            .addGap(99, 99, 99))))))))
-                .addGap(62, 62, 62))
+                                            .addGap(99, 99, 99))))
+                                .addGap(62, 62, 62))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tag95)
+                            .addComponent(tag97)
+                            .addComponent(tag93))
+                        .addGap(45, 45, 45))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(140, 140, 140)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(labelIPDataRecibe)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,7 +254,20 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(text97, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cargar97))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(idSucursalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
+                        .addComponent(idSurtidorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(labelIPDataRecibe))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -194,23 +275,41 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
 
     private void cargar93ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargar93ActionPerformed
         // TODO add your handling code here:
-        JFrame interfaz = new InterfazCargar("Bencina 93", parseDouble(text93.getText()));
+        JFrame interfaz = new InterfazCargar("Bencina 93", parseDouble(text93.getText()), idSurtidor, idSucursal);
         interfaz.setVisible(true);
-        
-        
     }//GEN-LAST:event_cargar93ActionPerformed
 
     private void cargar95ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargar95ActionPerformed
         // TODO add your handling code here:
+        JFrame interfaz = new InterfazCargar("Bencina 95", parseDouble(text95.getText()), idSurtidor, idSucursal);
+        interfaz.setVisible(true);
     }//GEN-LAST:event_cargar95ActionPerformed
 
     private void cargar97ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargar97ActionPerformed
         // TODO add your handling code here:
+        JFrame interfaz = new InterfazCargar("Bencina 97", parseDouble(text97.getText()), idSurtidor, idSucursal);
+        interfaz.setVisible(true);
     }//GEN-LAST:event_cargar97ActionPerformed
 
     private void text97ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text97ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_text97ActionPerformed
+
+    private void cargarDieselActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarDieselActionPerformed
+        // TODO add your handling code here:
+        JFrame interfaz = new InterfazCargar("Diesel", parseDouble(textDiesel.getText()), idSurtidor, idSucursal);
+        interfaz.setVisible(true);
+    }//GEN-LAST:event_cargarDieselActionPerformed
+
+    private void cargarKeroseneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarKeroseneActionPerformed
+        // TODO add your handling code here:
+        JFrame interfaz = new InterfazCargar("Kerosene", parseDouble(textKerosene.getText()), idSurtidor, idSucursal);
+        interfaz.setVisible(true);
+    }//GEN-LAST:event_cargarKeroseneActionPerformed
+
+    private void idSurtidorFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idSurtidorFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_idSurtidorFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -256,6 +355,12 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
     private javax.swing.JButton cargar97;
     private javax.swing.JButton cargarDiesel;
     private javax.swing.JButton cargarKerosene;
+    private javax.swing.JTextField idSucursalField;
+    private javax.swing.JTextField idSurtidorField;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel labelIPDataRecibe;
     private javax.swing.JLabel tag93;
     private javax.swing.JLabel tag95;
     private javax.swing.JLabel tag97;
@@ -267,9 +372,10 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
     private javax.swing.JTextField textDiesel;
     private javax.swing.JTextField textKerosene;
     // End of variables declaration//GEN-END:variables
-    private void abrirDialog(){
+    private void abrirDialog(String tipo){
         
-        dialog = new Dialog_setIp(this, true);
+        dialog = new Dialog_setIp(this, true, tipo);
+        dialog.setLocationRelativeTo(null);
         dialog.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
@@ -280,6 +386,8 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
     }
     @Override
     public void update(Observable arg0, Object arg) {
+        this.idSucursal = surtidor.getIdKeySucursal();
+        this.idSucursalField.setText(this.idSucursal);
         if (arg instanceof String) {
             nombreProductoActual = (String) arg;
         }else{          
