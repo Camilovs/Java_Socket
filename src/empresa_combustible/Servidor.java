@@ -16,6 +16,7 @@ public class Servidor implements Runnable {
     private DataOutputStream out; 
     private ServerSocket servidor;
     private Socket cliente;
+    private String idServidor;
 
     public Servidor(int puerto) {
         this.puerto = puerto;
@@ -30,6 +31,8 @@ public class Servidor implements Runnable {
             
             while (true) {                
                 cliente = servidor.accept();
+                out = new DataOutputStream(cliente.getOutputStream());
+                //out.writeUTF(idServidor);          
                 System.out.println("Cliente conectado");
                 clientes.add(cliente);
             }
@@ -37,11 +40,22 @@ public class Servidor implements Runnable {
             System.err.println("Error en despliege server: "+e.getMessage());
         }
     }
-    public void enviarInfo(String[] nombres, double[] valores) {
 
+    public String getIdServidor() {
+        return idServidor;
+    }
+
+    public void setIdServidor(String idServidor) {
+        this.idServidor = idServidor;
+    }
+    
+    public void enviarInfo(String[] nombres, double[] valores) {
+       
         for (Socket cliente : clientes) {
             try {
                 out = new DataOutputStream(cliente.getOutputStream());
+                out.writeUTF(idServidor);
+                System.out.println("Id recibida: "+idServidor);
                 for (int i = 0; i < nombres.length; i++) {
                     out.writeUTF(nombres[i]);
                     out.writeDouble(valores[i]);
@@ -53,4 +67,4 @@ public class Servidor implements Runnable {
         }
 
     }
-}
+}   

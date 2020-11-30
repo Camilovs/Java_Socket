@@ -3,13 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Camilo/Desktop/GIt/Java_Socket/src/empresa_combustible/InterfazSucursal.java</file>
-            <file>file:/E:/Camilo/Desktop/GIt/Java_Socket/src/empresa_combustible/Sucursal.java</file>
-            <file>file:/E:/Camilo/Desktop/GIt/Java_Socket/src/empresa_combustible/Servidor.java</file>
-            <file>file:/E:/Camilo/Desktop/GIt/Java_Socket/src/empresa_combustible/Surtidor.java</file>
-            <file>file:/E:/Camilo/Desktop/GIt/Java_Socket/src/empresa_combustible/Dialog_setIp.java</file>
-            <file>file:/E:/Camilo/Desktop/GIt/Java_Socket/src/empresa_combustible/InterfazSurtidor.java</file>
-            <file>file:/E:/Camilo/Desktop/GIt/Java_Socket/src/empresa_combustible/InterfazCentral.java</file>
+            <file>file:/C:/Users/mrroj/Documents/GitKraken%20Windows/Java_Socket/src/empresa_combustible/InterfazCentral.java</file>
+            <file>file:/C:/Users/mrroj/Documents/GitKraken%20Windows/Java_Socket/src/empresa_combustible/Reportes.java</file>
+            <file>file:/C:/Users/mrroj/Documents/GitKraken%20Windows/Java_Socket/src/empresa_combustible/Servidor.java</file>
+            <file>file:/C:/Users/mrroj/Documents/GitKraken%20Windows/Java_Socket/src/empresa_combustible/InterfazCargar.java</file>
+            <file>file:/C:/Users/mrroj/Documents/GitKraken%20Windows/Java_Socket/src/empresa_combustible/InterfazSucursal.java</file>
+            <file>file:/C:/Users/mrroj/Documents/GitKraken%20Windows/Java_Socket/src/empresa_combustible/Surtidor.java</file>
+            <file>file:/C:/Users/mrroj/Documents/GitKraken%20Windows/Java_Socket/src/empresa_combustible/Dialog_setIp.java</file>
+            <file>file:/C:/Users/mrroj/Documents/GitKraken%20Windows/Java_Socket/src/empresa_combustible/InterfazSurtidor.java</file>
+            <file>file:/C:/Users/mrroj/Documents/GitKraken%20Windows/Java_Socket/src/empresa_combustible/Sucursal.java</file>
+            <file>file:/C:/Users/mrroj/Documents/GitKraken%20Windows/Java_Socket/src/empresa_combustible/ConexionDB.java</file>
         </group>
     </open-files>
 </project-private>
