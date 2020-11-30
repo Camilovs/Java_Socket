@@ -53,10 +53,10 @@ public class Servidor implements Runnable {
        
         for (Socket cliente : clientes) {
             try {
-                out = new DataOutputStream(cliente.getOutputStream());
-                out.writeUTF(idServidor);
+                out = new DataOutputStream(cliente.getOutputStream());              
                 System.out.println("Id recibida: "+idServidor);
                 for (int i = 0; i < nombres.length; i++) {
+                    out.writeUTF(idServidor);
                     out.writeUTF(nombres[i]);
                     out.writeDouble(valores[i]);
                 }
