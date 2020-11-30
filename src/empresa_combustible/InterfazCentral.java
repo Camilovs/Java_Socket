@@ -17,6 +17,7 @@ public class InterfazCentral extends javax.swing.JFrame {
     
     private Servidor servidor;
     private Dialog_setIp dialog;
+    private String idServidor = "Central1";
     /**
      * Creates new form InterfazCentral
      */
@@ -26,6 +27,7 @@ public class InterfazCentral extends javax.swing.JFrame {
         this.setVisible(true);
         //abrirDialog("Central");
         servidor = new Servidor(5000);  
+        servidor.setIdServidor(idServidor);
         Thread t = new Thread(servidor);
         t.start();
     }

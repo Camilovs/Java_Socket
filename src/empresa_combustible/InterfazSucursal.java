@@ -8,10 +8,11 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
     
     private Servidor servidor;
     private Sucursal sucursal;
-    private Dialog_setIp dialog;
-    private int puerto;
+    private Dialog_setIp_Sucursal dialog;
+    private int puerto_server;
+    private int puerto_cliente;
     private String nombreProductoActual;
-    private Double factorActual=0.2;
+    private Double factorActual;
     private String idSucursal = "SSAL";
     
     public InterfazSucursal() {
@@ -19,14 +20,16 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
         initComponents();
         this.setVisible(true);
         abrirDialog("Sucursal");
-        puerto = Integer.parseInt(dialog.getPuerto());
-        sucursal = new Sucursal(puerto, dialog.getDireccion_ip());
-        servidor = new Servidor(5001);        
+        puerto_server = Integer.parseInt(dialog.getPuerto_server());
+        sucursal = new Sucursal(puerto_server, dialog.getDireccion_ip());
+        puerto_cliente = Integer.parseInt(dialog.getPuerto_cliente());
+        servidor = new Servidor(puerto_cliente);        
         sucursal.addObserver(this);
         idSucursal+=dialog.getIdKey();
         idSucursalField.setText(idSucursal);
         Thread t = new Thread(sucursal);
         t.start();
+        servidor.setIdServidor(idSucursal);
         Thread t2 = new Thread(servidor);
         t2.start();
         
@@ -113,6 +116,7 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
         jLabel3.setText("ID Sucursal:");
 
         idSucursalField.setEditable(false);
+        idSucursalField.setFocusable(false);
         idSucursalField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 idSucursalFieldActionPerformed(evt);
@@ -220,10 +224,14 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
         double noventacinco = Double.parseDouble(text95.getText())*(1+factorActual);
         double noventasiete = Double.parseDouble(text97.getText())*(1+factorActual);
         double diesel = Double.parseDouble(textDiesel.getText())*(1+factorActual);
-        double kerosene = Double.parseDouble(textKerosene.getText())*(1+factorActual);
-        
+        double kerosene = Double.parseDouble(textKerosene.getText())*(1+factorActual);  
         String[] nombres = {"93","95","97","diesel","kerosene"};
-        double[] valores = {noventatres,noventacinco,noventasiete,diesel,kerosene};
+        
+        double[] valores = {(double)Math.round(noventatres * 100d) / 100d,
+            (double)Math.round(noventacinco * 100d) / 100d,
+            (double)Math.round(noventasiete * 100d) / 100d,
+            (double)Math.round(diesel * 100d) / 100d,
+            (double)Math.round(kerosene * 100d) / 100d};
         servidor.enviarInfo(nombres, valores);
     }//GEN-LAST:event_setFactorActionPerformed
 
@@ -298,16 +306,17 @@ public class InterfazSucursal extends javax.swing.JFrame implements Observer{
     // End of variables declaration//GEN-END:variables
     private void abrirDialog(String tipo){
 
-            dialog = new Dialog_setIp(this, true, tipo);
-            dialog.setLocationRelativeTo(null);
-            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent e) {
-                    System.exit(0);
-                }
-            });
-            dialog.setVisible(true);        
-        }
+        dialog = new Dialog_setIp_Sucursal(this, true, tipo);
+        dialog.setLocationRelativeTo(null);
+        dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                System.exit(0);
+            }
+        });
+        dialog.setVisible(true);        
+    }
+    
     @Override
     public void update(Observable arg0, Object arg1) {
         if (arg1 instanceof String) {

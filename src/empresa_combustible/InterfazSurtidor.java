@@ -20,19 +20,21 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
     
     private String nombreProductoActual;
     private String idSurtidor = "SDOR";
-    private String idSucursal = "SSAL002";
+    private String idSucursal;
     private Dialog_setIp dialog;
+    private Surtidor surtidor;
+    private int puerto;
     public InterfazSurtidor() {
         setLocationRelativeTo(null);
         initComponents();
         this.setVisible(true);
         abrirDialog("Surtidor");
-        Surtidor distribuidor = new Surtidor(5001,dialog.getDireccion_ip());
-        distribuidor.addObserver(this);
+        puerto = Integer.parseInt(dialog.getPuerto());
+        surtidor = new Surtidor(puerto,dialog.getDireccion_ip());
+        surtidor.addObserver(this);
         idSurtidor+=dialog.getIdKey();
-        idSurtidorField.setText(idSurtidor);
-        idSucursalField.setText(idSucursal);
-        Thread t = new Thread(distribuidor);
+        idSurtidorField.setText(idSurtidor);    
+        Thread t = new Thread(surtidor);
         t.start();       
     }
 
@@ -132,6 +134,7 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
         jLabel3.setText("ID Surtidor:");
 
         idSurtidorField.setEditable(false);
+        idSurtidorField.setFocusable(false);
         idSurtidorField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 idSurtidorFieldActionPerformed(evt);
@@ -139,6 +142,7 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
         });
 
         idSucursalField.setEditable(false);
+        idSucursalField.setFocusable(false);
 
         jLabel1.setText("ID Sucursal:");
 
@@ -355,6 +359,8 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
     }
     @Override
     public void update(Observable arg0, Object arg) {
+        this.idSucursal = surtidor.getIdKeySucursal();
+        this.idSucursalField.setText(this.idSucursal);
         if (arg instanceof String) {
             nombreProductoActual = (String) arg;
         }else{          

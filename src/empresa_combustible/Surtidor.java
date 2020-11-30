@@ -23,11 +23,19 @@ public class Surtidor extends Observable implements Runnable{
     private DataOutputStream out;
     private String nombreTag;
     private double valor;
-
+    private String idKeySucursal;
     
     public Surtidor(int puerto, String host) {
         this.puerto = puerto;
         this.HOST = host;
+    }
+
+    public String getIdKeySucursal() {
+        return idKeySucursal;
+    }
+
+    public void setIdKeySucursal(String idKeySucursal) {
+        this.idKeySucursal = idKeySucursal;
     }
     
     @Override
@@ -35,8 +43,9 @@ public class Surtidor extends Observable implements Runnable{
         System.out.println("Iniciando dist..");
         try {
             cliente = new Socket(HOST, puerto);
-            System.out.println("surtidor conectandose a: "+HOST+":"+puerto);
+            System.out.println("surtidor conectandose a: "+HOST+":"+puerto);        
             in = new DataInputStream(cliente.getInputStream());
+            this.idKeySucursal = in.readUTF();
             while(true){
                 System.out.println("Escuchando datos..");
                 nombreTag = in.readUTF();
