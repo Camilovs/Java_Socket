@@ -6,7 +6,6 @@
 package empresa_combustible;
 
 import static java.lang.Double.parseDouble;
-import static java.lang.Float.parseFloat;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JFrame;

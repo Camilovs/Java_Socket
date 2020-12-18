@@ -2,17 +2,12 @@
 package empresa_combustible;
 
 import com.mysql.jdbc.PreparedStatement;
-import java.sql.Connection;          //Aqui obtenemos el metodo conectar
-import java.sql.DriverManager;       //Aqui obtenemos el manejo del driver de java a mysql
-import java.sql.SQLException;        //Aqui obtenemos los metodo para manejo de excepciones
-import java.sql.Statement;
 
 import java.sql.Connection;          //Aqui obtenemos el metodo conectar
 import java.sql.DriverManager;       //Aqui obtenemos el manejo del driver de java a mysql
 import java.sql.ResultSet;
 import java.sql.SQLException;        //Aqui obtenemos los metodo para manejo de excepciones
 import java.sql.Statement;
-import java.sql.Types;
 
 public class ConexionDB {
     private static Connection conexion; //Variable que sera la conexion con la bd

@@ -44,9 +44,9 @@ public class Surtidor extends Observable implements Runnable{
         try {
             cliente = new Socket(HOST, puerto);
             System.out.println("surtidor conectandose a: "+HOST+":"+puerto);        
-            in = new DataInputStream(cliente.getInputStream());
-            this.idKeySucursal = in.readUTF();
+            in = new DataInputStream(cliente.getInputStream());    
             while(true){
+                this.idKeySucursal = in.readUTF();
                 System.out.println("Escuchando datos..");
                 nombreTag = in.readUTF();
                 System.out.println("recibiendo nametag");

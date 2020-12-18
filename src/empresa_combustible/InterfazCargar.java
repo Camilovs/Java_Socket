@@ -5,13 +5,9 @@
  */
 package empresa_combustible;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.sql.SQLException;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
-import javax.swing.JRootPane;
 
 /**
  *
@@ -220,7 +216,7 @@ public class InterfazCargar extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         litros = Double.valueOf(litrosField.getText());
-        precioCalculado = precioCombustible*litros;
+        precioCalculado =(double)Math.round(precioCombustible*litros * 100d) / 100d ;    
         finalPriceField.setText(String.valueOf(precioCalculado));
        
     }//GEN-LAST:event_updateFinalPriceButtonActionPerformed

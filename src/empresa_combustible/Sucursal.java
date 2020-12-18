@@ -27,10 +27,10 @@ public class Sucursal extends Observable implements Runnable{
         try {
             cliente = new Socket(HOST,puerto);
             System.out.println("sucursal conectandose a: "+HOST+":"+puerto);
-            in = new DataInputStream(cliente.getInputStream());
-            idServidor = in.readUTF();
-            System.out.println("ID Recibida: "+idServidor);
-            while (true) {                
+            in = new DataInputStream(cliente.getInputStream());         
+            while (true) {              
+                idServidor = in.readUTF();
+                System.out.println("ID Recibida: "+idServidor);
                 System.out.println("Esperando datos..");
                 nombreTag = in.readUTF();
                 System.out.println("recibiendo nametag: "+nombreTag);
