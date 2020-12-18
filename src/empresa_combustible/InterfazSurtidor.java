@@ -6,6 +6,8 @@
 package empresa_combustible;
 
 import static java.lang.Double.parseDouble;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JFrame;
@@ -16,6 +18,8 @@ import javax.swing.JFrame;
  */
         
 public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
+    
+    private ArrayList<Report_File> colaReportes = new ArrayList<>(); 
     
     private String nombreProductoActual;
     private String idSurtidor = "SDOR";
@@ -382,6 +386,13 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
             }
         });
         dialog.setVisible(true);        
+    }
+    
+    private void actualizaBD(Report_File reporte) throws SQLException{
+        
+        ConexionDB conector = new ConexionDB();
+        conector.cargaCombustible(reporte.getIdSucursal(), reporte.getPrecioLitro(), reporte.getLitrosVendidos(), reporte.getPrecioVenta(), reporte.getIdSurtidor(), reporte.getCombustible());
+        
     }
     @Override
     public void update(Observable arg0, Object arg) {

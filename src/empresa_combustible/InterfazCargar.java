@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 
+
 /**
  *
  * @author mrroj
@@ -22,9 +23,11 @@ public class InterfazCargar extends javax.swing.JFrame {
     double precioCombustible;
     double precioCalculado;
     double litros;
+    double litrosCargados;
     String combustible;
     String idSurtidor;
     String idSucursal;
+    Report_File reporte = new Report_File();
     
     public InterfazCargar(String combustible, double precioActual, String idSurtidor, String idSucursal) {
         setResizable(false);
@@ -38,6 +41,10 @@ public class InterfazCargar extends javax.swing.JFrame {
         precioCombustible=precioActual;
         this.combustible=combustible;
         combustibleLabel.setText(combustible);
+    }
+
+    public Report_File getReporte() {
+        return reporte;
     }
 
     /**
@@ -226,6 +233,10 @@ public class InterfazCargar extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_cancelarButtonActionPerformed
 
+    public int getRandom(int max){
+       // return (int) (Math.random()*max);  //incorrect always return zero
+        return (int) (Math.random()*max);
+    }   
     /**
      * @param args the command line arguments
      */
@@ -261,46 +272,76 @@ public class InterfazCargar extends javax.swing.JFrame {
         });
     }
     
-    private void actualizaBD(){
-        ConexionDB conector = new ConexionDB();
-        try {
-            conector.cargaCombustible(idSucursal, precioCombustible, litros, precioCalculado, idSurtidor, combustible);
-        } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(InterfazCargar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-    }
+
     
     class BarraCargando implements Runnable {
     JProgressBar bar;
     
     int num_bar = 1;
     
+    
+    
+    
+    
     @Override
     @SuppressWarnings("null")
     public void run() {
-        for (int i = 1; i <= 100; i++)
+        int random1 = getRandom(10);
+        int random2 = -1;
+        int progressBarFinal = 100;
+        
+        if (random1>6) {
+            random2 = getRandom(99);
+            litrosCargados = litros*(random2*0.01);
+            progressBarFinal = random2;
+        }
+        
+        else {
+            litrosCargados = litros;
+        }
+        
+        
+        for (int i = 1; i <= progressBarFinal; i++)
         {   
             try {
-                Thread.sleep(30);
+                Thread.sleep(20);
             } catch (InterruptedException ex) {
                 java.util.logging.Logger.getLogger(InterfazCargar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
 
             this.getBar().setValue(i);
             
-            if (i==50){
-                actualizaBD();
+            if (this.getBar().getValue() == random2) {
+                //JOptionPane.showMessageDialog("Ha terminado el Jbar No: "+num_bar);
+                JOptionPane.showMessageDialog(rootPane, "No ha alcanzado el combustible\nSe han cargado "+litrosCargados+" litros de un total de "+litros+" litros.");
+                crearReporte();
+                dispose();
             }
             
-            if (this.getBar().getValue() == 100)
-            {
+            else if (this.getBar().getValue() == 100) {
                 //JOptionPane.showMessageDialog("Ha terminado el Jbar No: "+num_bar);
                 JOptionPane.showMessageDialog(rootPane, "Combustible cargado exitosamente");
+                crearReporte();
                 dispose();
-            }                        
+            }
+            
+            
         }        
         num_bar++;
     }
+    
+    private void crearReporte(){
+        reporte.setCombustible(combustible);
+        reporte.setEstadoCarga("Completado");
+        reporte.setIdSucursal(idSucursal);
+        reporte.setIdSurtidor(idSurtidor);
+        reporte.setLitrosSolicitados(litros);
+        reporte.setLitrosVendidos(litrosCargados);
+        reporte.setPrecioLitro(precioCalculado);
+        reporte.setPrecioVenta(precioCalculado);
+    }
+    
+    
 
     public void setBar(JProgressBar bar) {
         this.bar = bar;
@@ -311,6 +352,7 @@ public class InterfazCargar extends javax.swing.JFrame {
     }
     
 }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelarButton;
