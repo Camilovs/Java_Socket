@@ -5,11 +5,14 @@
  */
 package empresa_combustible;
 
+import java.awt.Color;
+import java.awt.Font;
 import static java.lang.Double.parseDouble;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Queue;
 import javax.swing.JFrame;
 
 /**
@@ -27,6 +30,8 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
     private Dialog_setIp dialog;
     private Surtidor surtidor;
     private int puerto;
+    private Carga_Reportes_Sucursal cola;
+   
     public InterfazSurtidor() {
         setLocationRelativeTo(null);
         initComponents();
@@ -38,8 +43,17 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
         labelIPDataRecibe.setText(dialog.getDireccion_ip()+":"+dialog.getPuerto());
         idSurtidor+=dialog.getIdKey();
         idSurtidorField.setText(idSurtidor);    
+        
+        //Seteando los estados de las conexiones a conectado
+        setEstadoCentral(true);
+        setEstadoSucursal(false);
+        
+        //Iniciando servicios
         Thread t = new Thread(surtidor);
         t.start();       
+        cola = new Carga_Reportes_Sucursal();
+        Thread t2 = new Thread(cola);
+        t2.start();
     }
 
     /**
@@ -72,6 +86,10 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         labelIPDataRecibe = new javax.swing.JLabel();
+        ConexionBDCentral = new javax.swing.JLabel();
+        EstadoCentral = new javax.swing.JLabel();
+        ConexionBDSuc = new javax.swing.JLabel();
+        EstadoSucursal = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Surtidor");
@@ -156,74 +174,94 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
 
         labelIPDataRecibe.setText("IP");
 
+        ConexionBDCentral.setText("Conexion BD Central:");
+
+        EstadoCentral.setText("Estado");
+
+        ConexionBDSuc.setText("Conexion BD Sucursal:");
+
+        EstadoSucursal.setText("Estado");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addComponent(idSucursalField, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(117, 117, 117)
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(idSurtidorField, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(ConexionBDSuc)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(EstadoSucursal))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(ConexionBDCentral)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(EstadoCentral, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(57, 57, 57)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(text97, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                            .addComponent(text97)
                             .addComponent(text95)
-                            .addComponent(text93, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(text93, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cargar97)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(cargar97)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cargar95)
                                     .addComponent(cargar93))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                                .addGap(64, 64, 64)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(textKerosene, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(textDiesel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cargarKerosene))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(textDiesel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(cargarDiesel))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(tagKerosene)
-                                            .addGap(85, 85, 85))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(cargarDiesel)
+                                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(tagDiesel)
-                                            .addGap(99, 99, 99))))
-                                .addGap(62, 62, 62))))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(textKerosene, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(cargarKerosene))
+                                            .addComponent(tagKerosene))
+                                        .addGap(0, 0, Short.MAX_VALUE))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tag95)
                             .addComponent(tag97)
-                            .addComponent(tag93))
-                        .addGap(45, 45, 45))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(140, 140, 140)
+                            .addComponent(tag93)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(idSucursalField, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(idSurtidorField, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(55, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelIPDataRecibe)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(146, 146, 146))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ConexionBDCentral)
+                    .addComponent(EstadoCentral))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ConexionBDSuc)
+                    .addComponent(EstadoSucursal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(tag93)
@@ -236,7 +274,9 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(text95, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cargar95)))
+                            .addComponent(cargar95)
+                            .addComponent(textKerosene, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cargarKerosene)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(tagDiesel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -244,33 +284,25 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
                             .addComponent(textDiesel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cargarDiesel))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(22, 22, 22)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(textKerosene, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cargarKerosene)))
-                            .addComponent(tagKerosene))))
+                        .addComponent(tagKerosene)
+                        .addGap(38, 38, 38)))
                 .addGap(18, 18, 18)
                 .addComponent(tag97)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(text97, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cargar97))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(idSucursalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel3)
-                        .addComponent(idSurtidorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(idSucursalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(idSurtidorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelIPDataRecibe))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -278,20 +310,24 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
 
     private void cargar93ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargar93ActionPerformed
         // TODO add your handling code here:
-        JFrame interfaz = new InterfazCargar("Bencina 93", parseDouble(text93.getText()), idSurtidor, idSucursal);
+        InterfazCargar interfaz = new InterfazCargar("Bencina 93", parseDouble(text93.getText()), 
+                idSurtidor, idSucursal);
         interfaz.setVisible(true);
+        
     }//GEN-LAST:event_cargar93ActionPerformed
 
     private void cargar95ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargar95ActionPerformed
         // TODO add your handling code here:
-        JFrame interfaz = new InterfazCargar("Bencina 95", parseDouble(text95.getText()), idSurtidor, idSucursal);
+        InterfazCargar interfaz = new InterfazCargar("Bencina 95", parseDouble(text95.getText()), 
+                idSurtidor, idSucursal);
         interfaz.setVisible(true);
     }//GEN-LAST:event_cargar95ActionPerformed
 
     private void cargar97ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargar97ActionPerformed
         // TODO add your handling code here:
-        JFrame interfaz = new InterfazCargar("Bencina 97", parseDouble(text97.getText()), idSurtidor, idSucursal);
-        interfaz.setVisible(true);
+        InterfazCargar interfaz = new InterfazCargar("Bencina 97", parseDouble(text97.getText()), 
+                idSurtidor, idSucursal);
+        interfaz.setVisible(true);      
     }//GEN-LAST:event_cargar97ActionPerformed
 
     private void text97ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text97ActionPerformed
@@ -300,13 +336,16 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
 
     private void cargarDieselActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarDieselActionPerformed
         // TODO add your handling code here:
-        JFrame interfaz = new InterfazCargar("Diesel", parseDouble(textDiesel.getText()), idSurtidor, idSucursal);
+        InterfazCargar interfaz = new InterfazCargar("Diesel", parseDouble(textDiesel.getText()), 
+                idSurtidor, idSucursal);    
         interfaz.setVisible(true);
+        
     }//GEN-LAST:event_cargarDieselActionPerformed
 
     private void cargarKeroseneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarKeroseneActionPerformed
         // TODO add your handling code here:
-        JFrame interfaz = new InterfazCargar("Kerosene", parseDouble(textKerosene.getText()), idSurtidor, idSucursal);
+        InterfazCargar interfaz = new InterfazCargar("Kerosene", parseDouble(textKerosene.getText()), 
+                idSurtidor, idSucursal);
         interfaz.setVisible(true);
     }//GEN-LAST:event_cargarKeroseneActionPerformed
 
@@ -353,6 +392,10 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel ConexionBDCentral;
+    private javax.swing.JLabel ConexionBDSuc;
+    private javax.swing.JLabel EstadoCentral;
+    private javax.swing.JLabel EstadoSucursal;
     private javax.swing.JButton cargar93;
     private javax.swing.JButton cargar95;
     private javax.swing.JButton cargar97;
@@ -375,6 +418,35 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
     private javax.swing.JTextField textDiesel;
     private javax.swing.JTextField textKerosene;
     // End of variables declaration//GEN-END:variables
+    
+    private void setEstadoCentral(boolean estado){
+        
+        Font f= new Font("Arial", Font.BOLD, 12);
+        if(estado){
+            EstadoCentral.setText("Conectado");
+            Color c = new Color(34, 171, 1);
+            EstadoCentral.setForeground(c);
+        }
+        else{
+            EstadoCentral.setText("Desconectado");
+            EstadoCentral.setForeground(Color.RED);
+        }
+        EstadoCentral.setFont(f);
+    }
+    
+    private void setEstadoSucursal(boolean estado){
+        Font f= new Font("Arial", Font.BOLD, 12);
+        if(estado){
+            EstadoSucursal.setText("Conectado");
+            Color c = new Color(34, 171, 1);
+            EstadoSucursal.setForeground(c);
+        }
+        else{
+            EstadoSucursal.setText("Desconectado");
+            EstadoSucursal.setForeground(Color.RED);
+        }
+        EstadoSucursal.setFont(f);
+    }
     private void abrirDialog(String tipo){
         
         dialog = new Dialog_setIp(this, true, tipo);

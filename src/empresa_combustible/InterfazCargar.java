@@ -20,16 +20,18 @@ public class InterfazCargar extends javax.swing.JFrame {
      * Creates new form InterfazCargar
      */
     
-    double precioCombustible;
-    double precioCalculado;
-    double litros;
-    double litrosCargados;
-    String combustible;
-    String idSurtidor;
-    String idSucursal;
-    Report_File reporte = new Report_File();
+    private double precioCombustible;
+    private double precioCalculado;
+    private double litros;
+    private double litrosCargados;
+    private String combustible;
+    private String idSurtidor;
+    private String idSucursal;
+    private Report_File reporte = new Report_File();
     
-    public InterfazCargar(String combustible, double precioActual, String idSurtidor, String idSucursal) {
+    
+    public InterfazCargar(String combustible, double precioActual, 
+            String idSurtidor, String idSucursal) {
         setResizable(false);
         setTitle("Estación de Cargado");
         setLocationRelativeTo(null);
@@ -267,7 +269,7 @@ public class InterfazCargar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InterfazCargar("Test", 2.5,"TEST", "SSAL01").setVisible(true);
+                //new InterfazCargar("Test", 2.5,"TEST", "SSAL01").setVisible(true);
             }
         });
     }
@@ -278,10 +280,6 @@ public class InterfazCargar extends javax.swing.JFrame {
     JProgressBar bar;
     
     int num_bar = 1;
-    
-    
-    
-    
     
     @Override
     @SuppressWarnings("null")
@@ -306,7 +304,7 @@ public class InterfazCargar extends javax.swing.JFrame {
             try {
                 Thread.sleep(20);
             } catch (InterruptedException ex) {
-                java.util.logging.Logger.getLogger(InterfazCargar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                
             }
 
             this.getBar().setValue(i);
@@ -315,6 +313,7 @@ public class InterfazCargar extends javax.swing.JFrame {
                 //JOptionPane.showMessageDialog("Ha terminado el Jbar No: "+num_bar);
                 JOptionPane.showMessageDialog(rootPane, "No ha alcanzado el combustible\nSe han cargado "+litrosCargados+" litros de un total de "+litros+" litros.");
                 crearReporte();
+                Carga_Reportes_Sucursal.addReporte(reporte);
                 dispose();
             }
             
@@ -322,6 +321,7 @@ public class InterfazCargar extends javax.swing.JFrame {
                 //JOptionPane.showMessageDialog("Ha terminado el Jbar No: "+num_bar);
                 JOptionPane.showMessageDialog(rootPane, "Combustible cargado exitosamente");
                 crearReporte();
+                Carga_Reportes_Sucursal.addReporte(reporte);
                 dispose();
             }
             
@@ -330,7 +330,7 @@ public class InterfazCargar extends javax.swing.JFrame {
         num_bar++;
     }
     
-    private void crearReporte(){
+    public void crearReporte(){
         reporte.setCombustible(combustible);
         reporte.setEstadoCarga("Completado");
         reporte.setIdSucursal(idSucursal);
