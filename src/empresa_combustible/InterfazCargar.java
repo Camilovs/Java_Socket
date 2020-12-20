@@ -312,7 +312,7 @@ public class InterfazCargar extends javax.swing.JFrame {
             if (this.getBar().getValue() == random2) {
                 //JOptionPane.showMessageDialog("Ha terminado el Jbar No: "+num_bar);
                 JOptionPane.showMessageDialog(rootPane, "No ha alcanzado el combustible\nSe han cargado "+litrosCargados+" litros de un total de "+litros+" litros.");
-                crearReporte();
+                crearReporte("Fallido: Falta Combustible");
                 Carga_Reportes_Sucursal.addReporte(reporte);
                 dispose();
             }
@@ -320,7 +320,7 @@ public class InterfazCargar extends javax.swing.JFrame {
             else if (this.getBar().getValue() == 100) {
                 //JOptionPane.showMessageDialog("Ha terminado el Jbar No: "+num_bar);
                 JOptionPane.showMessageDialog(rootPane, "Combustible cargado exitosamente");
-                crearReporte();
+                crearReporte("Completado");
                 Carga_Reportes_Sucursal.addReporte(reporte);
                 dispose();
             }
@@ -330,15 +330,20 @@ public class InterfazCargar extends javax.swing.JFrame {
         num_bar++;
     }
     
-    public void crearReporte(){
-        reporte.setCombustible(combustible);
-        reporte.setEstadoCarga("Completado");
+    public void crearReporte(String estado){
+        
         reporte.setIdSucursal(idSucursal);
         reporte.setIdSurtidor(idSurtidor);
+        reporte.setCombustible(combustible);
+        
+        reporte.setPrecioLitro(precioCombustible);
         reporte.setLitrosSolicitados(litros);
         reporte.setLitrosVendidos(litrosCargados);
-        reporte.setPrecioLitro(precioCalculado);
-        reporte.setPrecioVenta(precioCalculado);
+        
+        reporte.setPrecioVenta((double)Math.round(precioCombustible*litrosCargados * 100d) / 100d);
+        
+        reporte.setEstadoCarga(estado);
+        
     }
     
     

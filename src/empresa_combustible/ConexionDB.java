@@ -13,10 +13,10 @@ public class ConexionDB {
     private static Connection conexion; //Variable que sera la conexion con la bd
     private static final String usuario = "distribuidos"; //Usuario de MySQL
     private static final String password = "gato espacial"; //Contraseña
-    private static final String urlCentral = "jdbc:mysql://179.56.164.139:3306/Central"; //Base de datos de la central
-    private static final String urlSucursal1 = "jdbc:mysql://179.56.164.139:3307/Sucursal"; //Base de datos de la Sucursal 1
-    private static final String urlSucursal2 = "jdbc:mysql://179.56.164.139:3308/Sucursal"; //Base de datos de la Sucursal 2
-    private static final String urlSucursal3 = "jdbc:mysql://179.56.164.139:3309/Sucursal"; //Base de datos de la Sucursal 3
+    private static final String urlCentral = "jdbc:mysql://179.56.164.139:3341/Central"; //Base de datos de la central
+    private static final String urlSucursal1 = "jdbc:mysql://179.56.164.139:3342/Sucursal01"; //Base de datos de la Sucursal 1
+    private static final String urlSucursal2 = "jdbc:mysql://179.56.164.139:3343/Sucursal02"; //Base de datos de la Sucursal 2
+    private static final String urlSucursal3 = "jdbc:mysql://179.56.164.139:3344/Sucursal03"; //Base de datos de la Sucursal 3
     
     
     //Metodos para realizar la conexion a la base de datos por parte del programa
@@ -100,69 +100,51 @@ public class ConexionDB {
         conexion.close(); //Cierre de la conexion
     }
     
-    /**
-     * Metodo para registrar las cargas de combustibles
-     * @param idSucursal
-     * @param sucursal Sucursal en donde se realizara la compra
-     * @param precioLitro Precio por litro de un determinado combustible (ajuste aplicado)
-     * @param litrosCarga Cantidad de litros que se cargan
-     * @param totalPagar Total que se debe cancelar
-     * @param id_surtidor Surtidor en el cual se realizo la carga de combustible
-     * @param id_combustible
-     * @throws SQLException 
-     */
-    public void cargaCombustible(String idSucursal, double precioLitro, double litrosCarga, double totalPagar, String id_surtidor, String id_combustible) throws SQLException {
 
-        System.out.println("La sucursal es:");
+    public void cargaCombustible(Report_File reporte) throws SQLException {
         
-        System.out.println("Enviando información a base de datos LOCAL");
+        System.out.println("Enviando información a base de datos SUCURSAL");
         //Condiciones para determinar que sucursal se esta trabajando
-        if (idSucursal.equals("SSAL001"))
+        if (reporte.getIdSucursal().equals("SSAL001"))
             abrirConexionSucursal1();
-        if (idSucursal.equals("SSAL002"))
+        if (reporte.getIdSucursal().equals("SSAL002"))
             abrirConexionSucursal2();
-        if (idSucursal.equals("SSAL003"))
+        if (reporte.getIdSucursal().equals("SSAL003"))
             abrirConexionSucursal3();
 
-        //Statement s = conexion.createStatement(); //Se crea la instancia para empezar a enviar las consultas
-        //String test = precioLitro+","+litrosCarga+","+totalPagar;//+","+id_surtidor;
-        //System.out.println(test);
+        enviarInformacionBD(reporte);
         
-        PreparedStatement declara =  (PreparedStatement) conexion.prepareStatement("INSERT INTO Surtidor VALUES (?,?,?,?,?)");
-        declara.setDouble(1, precioLitro);
-        declara.setDouble(2, litrosCarga);
-        declara.setDouble(3, totalPagar);
-        declara.setString(4, id_surtidor);
-        declara.setString(5, id_combustible);
-        declara.executeUpdate();
-        //s.executeUpdate("INSERT INTO Surtidor VALUES ("+precioLitro+","+litrosCarga+","+totalPagar+","+id_surtidor+")"); //Consulta que registra la compra
-        //s.executeUpdate("INSERT INTO Surtidor VALUES ("+test+")"); //Consulta que registra la compra
-        conexion.close(); //Cierre de la conexion con la sucursal
-        //Inicio de conexion con la central para informar de la compra en el surtidor X de la sucursal Y
-        //
         System.out.println("Enviando información a base de datos CENTRAL");
+        
         abrirConexionCentral();
-        PreparedStatement declara1 =  (PreparedStatement) conexion.prepareStatement("INSERT INTO Surtidor VALUES (?,?,?,?,?,?)");
-        declara1.setDouble(1, precioLitro);
-        declara1.setDouble(2, litrosCarga);
-        declara1.setDouble(3, totalPagar);
-        declara1.setString(4, id_surtidor);
-        declara1.setString(5, idSucursal);
-        declara1.setString(6, id_combustible);
-        declara1.executeUpdate();
-        //s = conexion.createStatement(); //Se crea la instancia para empezar a enviar las consultas
-        //s.executeUpdate("INSERT INTO Surtidor VALUES ("+precioLitro+","+litrosCarga+","+totalPagar+","+id_surtidor+","+id_sucursal+")"); //Consulta que registra la compra
-        conexion.close(); //Cierre de la conexion*/
+        
+        enviarInformacionBD(reporte);
+        
     }
     
     public void printReporte() throws SQLException {
         abrirConexionCentral();
         Statement s = conexion.createStatement();
         ResultSet rs = s.executeQuery ("select * from Surtidor");
-        System.out.println("precioLitro | litrosCarga | totalPagar | surtidor | sucursal | combustible");
+        System.out.println("ID Sucursal | ID Surtidor | Combustible | Precio x Litro | Litros Solicitados | Litros Vendidos | Precio Venta | Estado de Carga");
         while (rs.next()) {
-            System.out.println (rs.getString (1) + " " + rs.getString (2) + " " + rs.getString (3) + " " + rs.getString (4) + " " + rs.getString (5) + " " + rs.getString (6));
+            System.out.println (rs.getString (1) + " " + rs.getString (2) + " " + rs.getString (3) + " " + rs.getString (4) + " " + rs.getString (5) + " " + rs.getString (6)+ " " + rs.getString (7)+ " " + rs.getString (8));
         }
+    }
+    
+    private void enviarInformacionBD(Report_File reporte) throws SQLException{
+        PreparedStatement declara =  (PreparedStatement) conexion.prepareStatement("INSERT INTO Surtidor VALUES (?,?,?,?,?,?,?,?)");
+        //String idSucursal, String idSurtidor, String combustible, Double precioLitro, Double litrosSolicitados, Double litrosVendidos, Double precioVenta, String estadoCarga
+        declara.setString(1, reporte.getIdSucursal());
+        declara.setString(2, reporte.getIdSurtidor());
+        declara.setString(3, reporte.getCombustible());
+        declara.setDouble(4, reporte.getPrecioLitro());
+        declara.setDouble(5, reporte.getLitrosSolicitados());
+        declara.setDouble(6, reporte.getLitrosVendidos());
+        declara.setDouble(7, reporte.getPrecioVenta());
+        declara.setString(8, reporte.getEstadoCarga());
+        declara.executeUpdate();
+        conexion.close(); //Cierre de la conexion con la BD
     }
     
     public ResultSet getReporte(int idBD) throws SQLException {
