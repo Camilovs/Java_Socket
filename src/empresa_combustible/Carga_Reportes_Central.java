@@ -10,9 +10,11 @@ public class Carga_Reportes_Central implements Runnable{
     
     private static Queue<Report_File> cola_reportes;
     private boolean conexion = true;
+    private ConexionDB conexionDB;
     
     public Carga_Reportes_Central() {
         cola_reportes = new LinkedList<>();
+        conexionDB = new ConexionDB();
     }
     
     @Override
@@ -27,19 +29,19 @@ public class Carga_Reportes_Central implements Runnable{
                 try {                 
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
-                    System.err.println("Error en esperar por reporte");
+                    System.err.println("Error en sleep por reporte");
                 }
             }
             //Si la cola tiene un reporte, se envia.
             else{   
                 
-                if(conexion){
+                if(conexionDB.probarConexionCentral()){
                     
-                     //Enviar Reportes SQL
-                     
+                    //Enviar Reportes SQL
+                    
                     Report_File reporte = getReporte();
                     try {
-                        actualizaBD(reporte);
+                        conexionDB.enviarReporteCentral(reporte);
                     } catch (SQLException ex) {
                         Logger.getLogger(Carga_Reportes_Central.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -47,6 +49,7 @@ public class Carga_Reportes_Central implements Runnable{
                 }
                 else{
                     try {
+                        //System.err.println("Conexion con Central no establecida.");
                         Thread.sleep(5000);
                     } catch (InterruptedException ex) {
                         
@@ -70,12 +73,5 @@ public class Carga_Reportes_Central implements Runnable{
             return null;
         }
     }
-    
-    private void actualizaBD(Report_File reporte) throws SQLException{
-        
-        ConexionDB conector = new ConexionDB();
-        conector.cargaCombustible(reporte);
-        
-    }
-    
+   
 }

@@ -10,9 +10,11 @@ public class Carga_Reportes_Sucursal implements Runnable{
     
     private static Queue<Report_File> cola_reportes;
     private boolean conexion = true;
+    private ConexionDB conexionDB;
 
     public Carga_Reportes_Sucursal() {
         cola_reportes = new LinkedList<>();
+        conexionDB = new ConexionDB();
     }
     
     
@@ -31,12 +33,12 @@ public class Carga_Reportes_Sucursal implements Runnable{
                 }
             }
             //Si la cola tiene un reporte, se envia.
-            else{   
-                
-                if(conexion){
-                    Report_File reporte = getReporte();
+            else{  
+                Report_File reporte = cola_reportes.peek();          
+                if(conexionDB.probarConexionSucursal(reporte.getIdSucursal())){
+                    reporte = getReporte();
                     try {
-                        actualizaBD(reporte);
+                        conexionDB.enviarReporteSucursal(reporte);
                     } catch (SQLException ex) {
                         Logger.getLogger(Carga_Reportes_Sucursal.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -68,11 +70,6 @@ public class Carga_Reportes_Sucursal implements Runnable{
         }
     }
     
-    private void actualizaBD(Report_File reporte) throws SQLException{
-        
-        ConexionDB conector = new ConexionDB();
-        conector.cargaCombustible(reporte);
-        
-    }
+    
     
 }

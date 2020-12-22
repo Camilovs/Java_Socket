@@ -314,6 +314,7 @@ public class InterfazCargar extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "No ha alcanzado el combustible\nSe han cargado "+litrosCargados+" litros de un total de "+litros+" litros.");
                 crearReporte("Fallido: Falta Combustible");
                 Carga_Reportes_Sucursal.addReporte(reporte);
+                Carga_Reportes_Central.addReporte(reporte);
                 dispose();
             }
             
@@ -322,6 +323,7 @@ public class InterfazCargar extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "Combustible cargado exitosamente");
                 crearReporte("Completado");
                 Carga_Reportes_Sucursal.addReporte(reporte);
+                Carga_Reportes_Central.addReporte(reporte);
                 dispose();
             }
             

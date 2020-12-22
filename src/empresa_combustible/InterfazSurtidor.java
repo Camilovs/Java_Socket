@@ -26,15 +26,20 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
     
     private String nombreProductoActual;
     private String idSurtidor = "SDOR";
-    private String idSucursal;
+    private String idSucursal="";
     private Dialog_setIp dialog;
     private Surtidor surtidor;
     private int puerto;
-    private Carga_Reportes_Sucursal cola;
+    private Carga_Reportes_Sucursal cola_sucursal;
+    private Carga_Reportes_Central cola_central;
    
     public InterfazSurtidor() {
         setLocationRelativeTo(null);
         initComponents();
+        ConexionBDCentral.setVisible(false);
+        ConexionBDSuc.setVisible(false);
+        EstadoCentral.setVisible(false);
+        EstadoSucursal.setVisible(false);
         this.setVisible(true);
         abrirDialog("Surtidor");
         puerto = Integer.parseInt(dialog.getPuerto());
@@ -45,15 +50,19 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
         idSurtidorField.setText(idSurtidor);    
         
         //Seteando los estados de las conexiones a conectado
-        setEstadoCentral(true);
+        setEstadoCentral(true);   
         setEstadoSucursal(false);
+          
         
         //Iniciando servicios
         Thread t = new Thread(surtidor);
         t.start();       
-        cola = new Carga_Reportes_Sucursal();
-        Thread t2 = new Thread(cola);
+        cola_sucursal = new Carga_Reportes_Sucursal();
+        Thread t2 = new Thread(cola_sucursal);
+        cola_central = new Carga_Reportes_Central();
+        Thread t3 = new Thread(cola_central);      
         t2.start();
+        t3.start();      
     }
 
     /**
@@ -175,12 +184,16 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
         labelIPDataRecibe.setText("IP");
 
         ConexionBDCentral.setText("Conexion BD Central:");
+        ConexionBDCentral.setEnabled(false);
 
         EstadoCentral.setText("Estado");
+        EstadoCentral.setEnabled(false);
 
         ConexionBDSuc.setText("Conexion BD Sucursal:");
+        ConexionBDSuc.setEnabled(false);
 
         EstadoSucursal.setText("Estado");
+        EstadoSucursal.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -261,7 +274,7 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ConexionBDSuc)
                     .addComponent(EstadoSucursal))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(tag93)
@@ -286,7 +299,6 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
                         .addGap(18, 18, 18)
                         .addComponent(tagKerosene)
                         .addGap(38, 38, 38)))
-                .addGap(18, 18, 18)
                 .addComponent(tag97)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

@@ -99,10 +99,8 @@ public class ConexionDB {
         s.executeQuery ("UPDATE combustible SET precio ="+ precioKero +"WHERE id_combustible = 'Kerosene';");
         conexion.close(); //Cierre de la conexion
     }
-    
-
-    public void cargaCombustible(Report_File reporte) throws SQLException {
-        
+     
+    public void enviarReporteSucursal(Report_File reporte) throws SQLException{
         System.out.println("Enviando información a base de datos SUCURSAL");
         //Condiciones para determinar que sucursal se esta trabajando
         if (reporte.getIdSucursal().equals("SSAL001"))
@@ -113,15 +111,12 @@ public class ConexionDB {
             abrirConexionSucursal3();
 
         enviarInformacionBD(reporte);
-        
-        System.out.println("Enviando información a base de datos CENTRAL");
-        
-        abrirConexionCentral();
-        
-        enviarInformacionBD(reporte);
-        
     }
-    
+    public void enviarReporteCentral(Report_File reporte) throws SQLException{
+        System.out.println("Enviando información a base de datos CENTRAL");     
+        abrirConexionCentral();
+        enviarInformacionBD(reporte);
+    }
     public void printReporte() throws SQLException {
         abrirConexionCentral();
         Statement s = conexion.createStatement();
@@ -162,6 +157,36 @@ public class ConexionDB {
         return rs;
     }
     
+    public boolean probarConexionSucursal(String sucursal){
+        Connection test=null;
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            if(sucursal.equals("SSAL001")){
+                test = DriverManager.getConnection(urlSucursal1, usuario, password);
+            }
+            else if(sucursal.equals("SSAL002")){
+                test = DriverManager.getConnection(urlSucursal2, usuario, password);
+            }
+            else if(sucursal.equals("SSAL003")){
+                test = DriverManager.getConnection(urlSucursal3, usuario, password);
+            }
+        }catch(SQLException | ClassNotFoundException ex){
+            System.err.println("Error Conectando a BD sucursal "+sucursal);
+        }
+        return test != null;
+        
+    }
+    
+    public boolean probarConexionCentral(){
+        Connection test=null;
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            test = DriverManager.getConnection(urlCentral, usuario, password);
+        }catch(SQLException | ClassNotFoundException ex){
+            System.err.println("Error Conectando a BD Central");
+        }
+        return test != null;
+    }
     /**
      * Metodo para registrar los ajustes que se le realizan a un precio en especifico
      * @param sucursal Sucursal en donde se realizara la compra

@@ -59,6 +59,7 @@ public class Surtidor extends Observable implements Runnable{
                 this.setChanged();
                 this.notifyObservers(valor);
                 this.clearChanged();
+                
             }
             
         } catch (IOException ex) {

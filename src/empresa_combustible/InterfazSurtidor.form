@@ -123,7 +123,7 @@
                   <Component id="ConexionBDSuc" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="EstadoSucursal" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="8" max="32767" attributes="0"/>
+              <EmptySpace pref="26" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="tag93" min="-2" max="-2" attributes="0"/>
@@ -154,7 +154,6 @@
                       <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="tag97" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -310,21 +309,25 @@
     <Component class="javax.swing.JLabel" name="ConexionBDCentral">
       <Properties>
         <Property name="text" type="java.lang.String" value="Conexion BD Central:"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="EstadoCentral">
       <Properties>
         <Property name="text" type="java.lang.String" value="Estado"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="ConexionBDSuc">
       <Properties>
         <Property name="text" type="java.lang.String" value="Conexion BD Sucursal:"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="EstadoSucursal">
       <Properties>
         <Property name="text" type="java.lang.String" value="Estado"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
   </SubComponents>
