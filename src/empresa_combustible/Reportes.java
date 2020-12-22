@@ -57,14 +57,14 @@ public class Reportes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Sucursal", "Surtidor", "Combustible", "Precio x Litro", "Litros Cargados", "Precio Venta"
+                "Sucursal", "Surtidor", "Combustible", "Precio x Litro", "Litros Solicitados", "Litros Vendidos", "Precio Venta", "Estado Carga"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -132,28 +132,26 @@ public class Reportes extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addGap(18, 18, 18))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonBDCentral)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonBDSSAL001)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonBDSSAL002)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonBDSSAL003)
+                        .addContainerGap(326, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(closeButton)
-                                .addGap(277, 277, 277)
-                                .addComponent(totalVentasText, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(totalVentasText)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(totalVentasField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(buttonBDCentral)
-                                .addGap(18, 18, 18)
-                                .addComponent(buttonBDSSAL001)
-                                .addGap(18, 18, 18)
-                                .addComponent(buttonBDSSAL002)
-                                .addGap(18, 18, 18)
-                                .addComponent(buttonBDSSAL003)))
-                        .addContainerGap(18, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane1))
+                        .addGap(18, 18, 18))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,45 +270,39 @@ public class Reportes extends javax.swing.JFrame {
     private void iniciarTabla(int idDB) throws SQLException{
         ConexionDB datos = new ConexionDB();
         ResultSet rs = datos.getReporte(idDB);
-        Double precioLitro;
-        Double litrosCarga;
-        Double totalPagar;
-        String idSurtidor;
+        
         String idSucursal="";
+        String idSurtidor="";
         String combustible="";
+        
+        Double precioLitro;
+        Double litrosSolicitados;
+        Double litrosVendidos;
+        Double precioVenta;
+        
+        String estadoCarga="";
+        
         Double totalVentas = 0.0;
         
         DefaultTableModel modelTablaVentas = (DefaultTableModel) tablaVentas.getModel();
         modelTablaVentas.setRowCount(0);
         
         while (rs.next()) {
-            precioLitro = rs.getDouble(1);
-            litrosCarga = rs.getDouble(2);
-            totalPagar = rs.getDouble(3);
-            idSurtidor = rs.getString(4);
             
-            if (idDB==0){
-                idSucursal = rs.getString(5);
-                combustible = rs.getString(6);
-            }
-            if (idDB==1){
-                idSucursal="SSAL01";
-                combustible = rs.getString(5);
-            }
+            idSucursal = rs.getString(1);
+            idSurtidor = rs.getString(2);
+            combustible = rs.getString(3);
             
-            if (idDB==2){
-                idSucursal="SSAL02";
-                combustible = rs.getString(5);
-            }
+            precioLitro = rs.getDouble(4);
+            litrosSolicitados = rs.getDouble(5);
+            litrosVendidos = rs.getDouble(6);
+            precioVenta = rs.getDouble(7);
             
-            if (idDB==3){
-                idSucursal="SSAL03";
-                combustible = rs.getString(5);
-            }
+            estadoCarga = rs.getString(8);
             
-            totalVentas+=totalPagar;
+            totalVentas+=precioVenta;
             
-            modelTablaVentas.addRow(new Object[]{idSucursal, idSurtidor, combustible, precioLitro, litrosCarga, totalPagar});
+            modelTablaVentas.addRow(new Object[]{idSucursal, idSurtidor, combustible, precioLitro, litrosSolicitados, litrosVendidos, precioVenta, estadoCarga});
         }
         
         totalVentasField.setText(Double.toString(totalVentas));

@@ -1,5 +1,6 @@
 package empresa_combustible;
 
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.logging.Level;
@@ -8,7 +9,7 @@ import java.util.logging.Logger;
 public class Carga_Reportes_Sucursal implements Runnable{
     
     private static Queue<Report_File> cola_reportes;
-    private boolean conexion;
+    private boolean conexion = true;
 
     public Carga_Reportes_Sucursal() {
         cola_reportes = new LinkedList<>();
@@ -34,6 +35,11 @@ public class Carga_Reportes_Sucursal implements Runnable{
                 
                 if(conexion){
                     Report_File reporte = getReporte();
+                    try {
+                        actualizaBD(reporte);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Carga_Reportes_Sucursal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 
                     System.out.println("Reporte "+ reporte.getIdSurtidor()+ " enviado!");
                 }
@@ -60,6 +66,13 @@ public class Carga_Reportes_Sucursal implements Runnable{
         else{
             return null;
         }
+    }
+    
+    private void actualizaBD(Report_File reporte) throws SQLException{
+        
+        ConexionDB conector = new ConexionDB();
+        conector.cargaCombustible(reporte);
+        
     }
     
 }

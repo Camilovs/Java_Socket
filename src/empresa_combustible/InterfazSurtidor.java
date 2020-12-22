@@ -460,12 +460,7 @@ public class InterfazSurtidor extends javax.swing.JFrame implements Observer{
         dialog.setVisible(true);        
     }
     
-    private void actualizaBD(Report_File reporte) throws SQLException{
-        
-        ConexionDB conector = new ConexionDB();
-        conector.cargaCombustible(reporte.getIdSucursal(), reporte.getPrecioLitro(), reporte.getLitrosVendidos(), reporte.getPrecioVenta(), reporte.getIdSurtidor(), reporte.getCombustible());
-        
-    }
+    
     @Override
     public void update(Observable arg0, Object arg) {
         this.idSucursal = surtidor.getIdKeySucursal();
